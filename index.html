@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Electric Bill Calculator</title>
+</head>
+<body>
+
+<h2>คำนวณค่าไฟจากเครื่องใช้ไฟฟ้า</h2>
+
+<b>ชื่อเครื่องใช้ไฟฟ้า</b>
+<b>จำนวนหน่วย (kWh)</b>
+
+<br><br>
+
+<div id="appliance-list">
+    <div>
+        <input type="text" name="name[]" placeholder="ชื่อเครื่องใช้ไฟฟ้า">
+        <input type="number" name="kwh[]" placeholder="kWh">
+    </div>
+</div>
+
+<br>
+
+<button type="button" onclick="addRow()">เพิ่ม</button>
+
+<br><br>
+
+<button type="button" onclick="calculate()">Calculate</button>
+
+<script>
+function addRow() {
+    const list = document.getElementById("appliance-list");
+
+    const row = document.createElement("div");
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.name = "name[]";
+    nameInput.placeholder = "ชื่อเครื่องใช้ไฟฟ้า";
+
+    const kwhInput = document.createElement("input");
+    kwhInput.type = "number";
+    kwhInput.name = "kwh[]";
+    kwhInput.placeholder = "kWh";
+
+    row.appendChild(nameInput);
+    row.appendChild(kwhInput);
+
+    list.appendChild(row);
+}
+
+function calculate(){
+    const appliance = document.querySelectorAll('input[name="name[]"]');
+    const kwhs  = document.querySelectorAll('input[name="kwh[]"]');
+
+    const appliance_data = [];
+
+    for (let i = 0; i < appliance.length; i++) {
+        appliance_data.push({
+            appliance_name: appliance[i].value,
+            unit: kwhs[i].value
+        });
+    }
+
+    console.log(appliance_data);
+
+    fetch("/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(appliance_data)
+    });
+
+}
+</script>
+
+</body>
+</html>
