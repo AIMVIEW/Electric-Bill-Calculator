@@ -9,8 +9,8 @@ const { pipeline } = require("stream/promises");
 app.use(express.json());
 
 const columns = [
-  "appliance_name",
-  "unit"
+  "appliance",
+  "units"
 ];
 
 // Define a route for GET requests to the root URL
